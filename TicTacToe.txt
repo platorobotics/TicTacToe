@@ -1,3 +1,13 @@
+/*******************************************************************************
+* Title                 :   Tic_Tac_Toe
+* Filename              :   TicTacToe.c
+* Author                :   Platon Tsuz
+* Origin Date           :   11/12/2024
+* Version               :   1.0.0
+* Compiler              :   Microsoft CodeBlocks
+* Target                :   None
+* Notes                 :   None
+*******************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
