@@ -1,0 +1,1296 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#ifdef _WIN32
+    #include <conio.h>
+
+#endif
+
+#define UP_ARROW 72
+#define DOWN_ARROW 80
+#define ENTER_KEY 13
+
+
+char num3[10] = {'0','1','2','3','4','5','6','7','8','9'};
+
+char num4[17] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g'};
+char num4copy [17] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g'};
+
+char num[10] = {'o','1','2','3','4','5','6','7','8','9'};
+
+
+void reset3x3(){
+    for (int i = 0; i<10; i++)
+    num3[i] = '0'+ i; //substitute with characters: ASII "0" - 48; "1" - 49. etc
+}
+
+void reset4x4(){
+    for (int i = 0; i<17; i++)
+    num4[i] = num4copy[i];
+}
+
+
+/*
+    Function to return status 1 for game over with a success,
+    -1 for game in progress & 0 for game over & draw situation.
+*/
+void screenclear(){
+    #ifdef _WIN32
+    system("cls");
+#else
+    printf("\033[H\033[J");
+#endif
+}
+
+int win3x3()
+{
+    if (num3[1] == num3[2] && num3[2] == num3[3])
+        return 1;
+    else if (num3[4] == num3[5] && num3[5] == num3[6]) //all the winning combinations
+        return 1;
+    else if (num3[7] == num3[8] && num3[8] == num3[9])
+        return 1;
+    else if (num3[1] == num3[4] && num3[4] == num3[7])
+        return 1;
+    else if (num3[2] == num3[5] && num3[5] == num3[8])
+        return 1;
+    else if (num3[3] == num3[6] && num3[6] == num3[9])
+        return 1;
+    else if (num3[1] == num3[5] && num3[5] == num3[9])
+        return 1;
+    else if (num3[3] == num3[5] && num3[5] == num3[7])
+        return 1;
+    else if (num3[1] != '1' && num3[2] != '2' && num3[3] != '3'         //draw, when all of them are flipped
+             && num3[4] != '4' && num3[5] != '5' && num3[6] != '6'
+             && num3[7] != '7' && num3[8] != '8' && num3[9] != '9')
+        return 0;
+    else
+        return -1;
+}
+
+int win4x4()
+{
+    if (num4[1] == num4[2] && num4[2] == num4[3]&& num4[3] == num4[4])
+        return 1;
+    else if (num4[5] == num4[6] && num4[6] == num4[7]&& num4[7] == num4[8]) //all the winning combinations
+        return 1;
+    else if (num4[9] == num4[10] && num4[10] == num4[11]&& num4[11] == num4[12])
+        return 1;
+    else if (num4[13] == num4[14] && num4[14] == num4[15]&& num4[15] == num4[16])
+        return 1;
+    else if (num4[1] == num4[5] && num4[5] == num4[9]&& num4[9] == num4[13])
+        return 1;
+    else if (num4[2] == num4[6] && num4[6] == num4[10]&& num4[10] == num4[14])
+        return 1;
+    else if (num4[3] == num4[7] && num4[7] == num4[11]&& num4[11] == num4[15])
+        return 1;
+    else if (num4[4] == num4[8] && num4[8] == num4[12]&& num4[12] == num4[16])
+        return 1;
+    else if (num4[1] == num4[6] && num4[6] == num4[11]&& num4[11] == num4[16])
+        return 1;
+    else if (num4[4] == num4[7] && num4[7] == num4[10]&& num4[10] == num4[13])
+        return 1;
+    else if (num4[1] != '1' && num4[2] != '2' && num4[3] != '3'         //draw, when all of them are flipped
+             && num4[4] != '4' && num4[5] != '5' && num4[6] != '6'
+             && num4[7] != '7' && num4[8] != '8' && num4[9] != '9'
+             && num4[10] != 'a'&& num4[11] != 'b'&& num4[12] != 'c'
+             && num4[13] != 'd'&& num4[14] != 'e'&& num4[15] != 'f'
+             && num4[16] != 'g')
+        return 0;
+    else
+        return -1;
+}
+
+
+void game3x3() // Function to draw the player's game board along with their input
+{
+    screenclear();
+    printf("\n\n\tTic Tac Toe\n\n");
+    printf("Player 1 (X)  -  Player 2 (O)\n\n");
+    printf("\n");
+
+    printf("     |     |     \n");
+    printf("  %c  |  %c  |  %c\n", num3[1], num3[2], num3[3]);
+    printf("_____|_____|_____\n");
+    printf("     |     |     \n");
+    printf("  %c  |  %c  |  %c\n", num3[4], num3[5], num3[6]);
+    printf("_____|_____|_____\n");
+    printf("     |     |     \n");
+    printf("  %c  |  %c  |  %c\n", num3[7], num3[8], num3[9]);
+    printf("     |     |     \n\n");
+}
+
+void game4x4() // Function to draw the player's game board along with their input
+{
+    screenclear();
+    printf("\n\n\tTic Tac Toe\n\n");
+    printf("Player 1 (X)  -  Player 2 (O)\n\n");
+    printf("\n");
+
+    printf("     |     |     |     \n");
+    printf("  %c  |  %c  |  %c  |  %c\n", num4[1], num4[2], num4[3], num4[4]);
+    printf("_____|_____|_____|_____\n");
+    printf("     |     |     |     \n");
+    printf("  %c  |  %c  |  %c  |  %c\n", num4[5], num4[6], num4[7], num4[8]);
+    printf("_____|_____|_____|_____\n");
+    printf("     |     |     |     \n");
+    printf("  %c  |  %c  |  %c  |  %c\n", num4[9], num4[10], num4[11], num4[12]);
+    printf("_____|_____|_____|_____\n");
+    printf("     |     |     |     \n");
+    printf("  %c  |  %c  |  %c  |  %c\n", num4[13], num4[14], num4[15], num4[16]);
+    printf("     |     |     |     \n\n");
+}
+void action3x3(int *player)
+{
+        char m;
+        int ch;
+        *player = (*player % 2) ? 1 : 2; //player switch
+
+        printf("Player %d, enter a number: ", *player);
+        scanf("%d", &ch);
+
+        m = (*player == 1) ? 'X' : 'O'; //symbols switch
+
+        if (ch == 1 && num3[1] == '1')  //1. check for nor used squares 2. set x or o
+            num3[1] = m;
+        else if (ch == 2 && num3[2] == '2')
+            num3[2] = m;
+        else if (ch == 3 && num3[3] == '3')
+            num3[3] = m;
+        else if (ch == 4 && num3[4] == '4')
+            num3[4] = m;
+        else if (ch == 5 && num3[5] == '5')
+            num3[5] = m;
+        else if (ch == 6 && num3[6] == '6')
+            num3[6] = m;
+        else if (ch == 7 && num3[7] == '7')
+            num3[7] = m;
+        else if (ch == 8 && num3[8] == '8')
+            num3[8] = m;
+        else if (ch == 9 && num3[9] == '9')
+            num3[9] = m;
+        else
+        {
+            printf("Invalid move ");
+            (*player)--;  //--------------------------------------let player remain the same
+            getchar(); // To consume the newline character
+            getchar(); // Wait for user input
+        }
+}
+void action4x4(int *player){
+        char m;
+        char ch;
+        *player = (*player % 2) ? 1 : 2; //player switch
+
+        printf("Player %d, enter a number: ", *player);
+        scanf("%c", &ch);
+        getchar();
+
+        m = (*player == 1) ? 'X' : 'O'; //symbols switch
+
+        if (ch == '1' && num4[1] == '1')  //1. check for nor used squares 2. set x or o
+            num4[1] = m;
+        else if (ch == '2' && num4[2] == '2')
+            num4[2] = m;
+        else if (ch == '3' && num4[3] == '3')
+            num4[3] = m;
+        else if (ch == '4' && num4[4] == '4')
+            num4[4] = m;
+        else if (ch == '5' && num4[5] == '5')
+            num4[5] = m;
+        else if (ch == '6' && num4[6] == '6')
+            num4[6] = m;
+        else if (ch == '7' && num4[7] == '7')
+            num4[7] = m;
+        else if (ch == '8' && num4[8] == '8')
+            num4[8] = m;
+        else if (ch == '9' && num4[9] == '9')
+            num4[9] = m;
+        else if (ch == 'a' && num4[10] == 'a')
+            num4[10] = m;
+        else if (ch == 'b' && num4[11] == 'b')
+            num4[11] = m;
+        else if (ch == 'c' && num4[12] == 'c')
+            num4[12] = m;
+        else if (ch == 'd' && num4[13] == 'd')
+            num4[13] = m;
+        else if (ch == 'e' && num4[14] == 'e')
+            num4[14] = m;
+        else if (ch == 'f' && num4[15] == 'f')
+            num4[15] = m;
+	    else if (ch == 'g' && num4[16] == 'g')
+            num4[16] = m;
+        else
+        {
+            printf("Invalid move ");
+            (*player)++;
+              //--------------------------------------let player remain the same
+            getchar(); // To consume the newline character
+            getchar(); // Wait for user input
+        }
+}
+void easybot3x3(int *player)
+{
+        char m;
+        int ch;
+        *player = (*player % 2) ? 1 : 2; //player switch
+        if (*player == 1){
+        printf("Player %d, enter a number: ", *player);
+        scanf("%d", &ch);
+
+        m = (*player == 1) ? 'X' : 'O'; //symbols switch
+
+        if (ch == 1 && num3[1] == '1')  //1. check for nor used squares 2. set x or o
+            num3[1] = m;
+        else if (ch == 2 && num3[2] == '2')
+            num3[2] = m;
+        else if (ch == 3 && num3[3] == '3')
+            num3[3] = m;
+        else if (ch == 4 && num3[4] == '4')
+            num3[4] = m;
+        else if (ch == 5 && num3[5] == '5')
+            num3[5] = m;
+        else if (ch == 6 && num3[6] == '6')
+            num3[6] = m;
+        else if (ch == 7 && num3[7] == '7')
+            num3[7] = m;
+        else if (ch == 8 && num3[8] == '8')
+            num3[8] = m;
+        else if (ch == 9 && num3[9] == '9')
+            num3[9] = m;
+        else
+        {
+            printf("Invalid move ");
+            (*player)--;  //--------------------------------------let player remain the same
+            getchar(); // To consume the newline character
+            getchar(); // Wait for user input
+        }
+        }
+        else{
+            m = (*player == 1) ? 'X' : 'O'; //symbols switch
+          while(1){
+          ch = 1 + rand() % 9;
+
+        if (ch == 1 && num3[1] == '1') { //1. check for nor used squares 2. set x or o
+            num3[1] = m;
+            break; }
+        else if (ch == 2 && num3[2] == '2'){
+            num3[2] = m;
+            break;}
+        else if (ch == 3 && num3[3] == '3'){
+            num3[3] = m;
+            break;}
+        else if (ch == 4 && num3[4] == '4'){
+            num3[4] = m;
+            break;}
+        else if (ch == 5 && num3[5] == '5'){
+            num3[5] = m;
+            break;}
+        else if (ch == 6 && num3[6] == '6'){
+            num3[6] = m;
+            break;}
+        else if (ch == 7 && num3[7] == '7'){
+            num3[7] = m;
+            break;}
+        else if (ch == 8 && num3[8] == '8'){
+            num3[8] = m;
+            break;}
+        else if (ch == 9 && num3[9] == '9'){
+            num3[9] = m;
+            break;}
+
+        }
+        }
+
+}
+
+void easybot4x4(int *player)
+{
+        char m;
+        char ch;
+        int ch1;
+        *player = (*player % 2) ? 1 : 2; //player switch
+
+        if (*player == 1){
+        printf("Player %d, enter a number: ", *player);
+        scanf("%c", &ch);
+        getchar();
+
+        m = (*player == 1) ? 'X' : 'O'; //symbols switch
+
+        if (ch == '1' && num4[1] == '1')  //1. check for nor used squares 2. set x or o
+            num4[1] = m;
+        else if (ch == '2' && num4[2] == '2')
+            num4[2] = m;
+        else if (ch == '3' && num4[3] == '3')
+            num4[3] = m;
+        else if (ch == '4' && num4[4] == '4')
+            num4[4] = m;
+        else if (ch == '5' && num4[5] == '5')
+            num4[5] = m;
+        else if (ch == '6' && num4[6] == '6')
+            num4[6] = m;
+        else if (ch == '7' && num4[7] == '7')
+            num4[7] = m;
+        else if (ch == '8' && num4[8] == '8')
+            num4[8] = m;
+        else if (ch == '9' && num4[9] == '9')
+            num4[9] = m;
+        else if (ch == 'a' && num4[10] == 'a')
+            num4[10] = m;
+        else if (ch == 'b' && num4[11] == 'b')
+            num4[11] = m;
+        else if (ch == 'c' && num4[12] == 'c')
+            num4[12] = m;
+        else if (ch == 'd' && num4[13] == 'd')
+            num4[13] = m;
+        else if (ch == 'e' && num4[14] == 'e')
+            num4[14] = m;
+        else if (ch == 'f' && num4[15] == 'f')
+            num4[15] = m;
+	    else if (ch == 'g' && num4[16] == 'g')
+            num4[16] = m;
+        else
+        {
+            printf("Invalid move ");
+            (*player)--;  //--------------------------------------let player remain the same
+            getchar(); // To consume the newline character
+            getchar(); // Wait for user input
+        }
+        }
+        else{
+            m = (*player == 1) ? 'X' : 'O'; //symbols switch
+          while(1){
+          ch1 = 1 + rand() % 16;
+
+        if (ch1 == 1 && num4[1] == '1'){  //1. check for nor used squares 2. set x or o
+            num4[1] = m;
+            break;}
+        else if (ch1 == 2 && num4[2] == '2'){
+            num4[2] = m;
+            break;}
+        else if (ch1 == 3 && num4[3] == '3'){
+            num4[3] = m;
+            break;}
+        else if (ch1 == 4 && num4[4] == '4'){
+            num4[4] = m;
+            break;}
+        else if (ch1 == 5 && num4[5] == '5'){
+            num4[5] = m;
+            break;}
+        else if (ch1 == 6 && num4[6] == '6'){
+            num4[6] = m;
+            break;}
+        else if (ch1 == 7 && num4[7] == '7'){
+            num4[7] = m;
+            break;}
+        else if (ch1 == 8 && num4[8] == '8'){
+            num4[8] = m;
+            break;}
+        else if (ch1 == 9 && num4[9] == '9'){
+            num4[9] = m;
+            break;}
+        else if (ch1 == 10 && num4[10] == 'a'){
+            num4[10] = m;
+             break;}
+        else if (ch1 == 11 && num4[11] == 'b'){
+            num4[11] = m;
+             break;}
+        else if (ch1 == 12 && num4[12] == 'c'){
+            num4[12] = m;
+             break;}
+        else if (ch1 == 13 && num4[13] == 'd'){
+            num4[13] = m;
+             break;}
+        else if (ch1 == 14 && num4[14] == 'e'){
+            num4[14] = m;
+             break;}
+        else if (ch1 == 15 && num4[15] == 'f'){
+            num4[15] = m;
+             break;}
+	    else if (ch1 == 16 && num4[16] == 'g'){
+            num4[16] = m;
+             break;}
+
+        }
+        }
+
+}
+void mediumbot3x3(int *player) //medium bot
+{
+        char m;
+        int ch;
+        *player = (*player % 2) ? 1 : 2; //player switch
+        if (*player == 1){
+        printf("Player %d, enter a number: ", *player);
+        scanf("%d", &ch);
+
+        m = (*player == 1) ? 'X' : 'O'; //symbols switch
+
+        if (ch == 1 && num3[1] == '1')  //1. check for nor used squares 2. set x or o
+            num3[1] = m;
+        else if (ch == 2 && num3[2] == '2')
+            num3[2] = m;
+        else if (ch == 3 && num3[3] == '3')
+            num3[3] = m;
+        else if (ch == 4 && num3[4] == '4')
+            num3[4] = m;
+        else if (ch == 5 && num3[5] == '5')
+            num3[5] = m;
+        else if (ch == 6 && num3[6] == '6')
+            num3[6] = m;
+        else if (ch == 7 && num3[7] == '7')
+            num3[7] = m;
+        else if (ch == 8 && num3[8] == '8')
+            num3[8] = m;
+        else if (ch == 9 && num3[9] == '9')
+            num3[9] = m;
+        else
+        {
+            printf("Invalid move ");
+            (*player)--;  //--------------------------------------let player remain the same
+            getchar(); // To consume the newline character
+            getchar(); // Wait for user input
+        }
+        }
+        else{
+            m = (*player == 1) ? 'X' : 'O'; //symbols switch
+            while(1){
+
+
+                //the x axis
+
+                if (num3[1] == num3[2]&&num3[3] == '3'){
+                    num3[3] = m;
+                    break;}
+                else if (num3[2] == num3[3]&&num3[1] == '1'){
+                    num3[1] = m;
+                    break;}
+                else if (num3[1] == num3[3]&&num3[2] =='2'){
+                    num3[2] = m;
+                    break;}
+
+                else if (num3[4] == num3[5]&&num3[6] == '6'){
+                    num3[6] = m;
+                    break;}
+                else if (num3[5] == num3[6]&&num3[4] == '4'){
+                    num3[4] = m;
+                    break;}
+                else if (num3[4] == num3[6]&&num3[5] == '5'){
+                    num3[5] = m;
+                    break;}
+
+                else if (num3[7] == num3[8]&&num3[9] == '9'){
+                    num3[9] = m;
+                    break;}
+                else if (num3[8] == num3[9]&&num3[7] == '7'){
+                    num3[7] = m;
+                    break;}
+                else if (num3[7] == num3[9]&&num3[8] == '8'){
+                    num3[8] = m;
+                    break;}
+
+
+                    //the y axis
+
+                else if (num3[1] == num3[4]&&num3[7] == '7'){
+                    num3[7] = m;
+                    break;}
+                else if (num3[4] == num3[7]&&num3[1] == '1'){
+                    num3[1] = m;
+                    break;}
+                else if (num3[1] == num3[7]&&num3[4] == '4'){
+                    num3[4] = m;
+                    break;}
+
+                else if (num3[2] == num3[5]&&num3[8] == '8'){
+                    num3[8] = m;
+                    break;}
+                else if (num3[5] == num3[8]&&num3[2] == '2'){
+                    num3[2] = m;
+                    break;}
+                else if (num3[2] == num3[8]&&num3[5] == '5'){
+                    num3[5] = m;
+                    break;}
+
+                else if (num3[3] == num3[6]&&num3[9] == '9'){
+                    num3[9] = m;
+                    break;}
+                else if (num3[6] == num3[9]&&num3[3] == '3'){
+                    num3[3] = m;
+                    break;}
+                else if (num3[3] == num3[9]&&num3[6] == '6'){
+                    num3[6] = m;
+                    break;}
+
+
+                 //the diagonals
+
+                else if (num3[1] == num3[5]&&num3[9] == '9'){
+                    num3[9] = m;
+                    break;}
+                else if (num3[5] == num3[9]&&num3[1] == '1'){
+                    num3[1] = m;
+                    break;}
+                else if (num3[1] == num3[9]&&num3[5] == '5'){
+                    num3[5] = m;
+                    break;}
+
+                else if (num3[3] == num3[5]&&num3[7] == '7'){
+                    num3[7] = m;
+                    break;}
+                else if (num3[5] == num3[7]&&num3[3] == '3'){
+                    num3[3] = m;
+                    break;}
+                else if (num3[3] == num3[7]&&num3[5] == '5'){
+                    num3[5] = m;
+                    break;}
+
+                else {
+
+
+
+          ch = 1 + rand() % 9;
+
+        if (ch == 1 && num3[1] == '1') { //1. check for nor used squares 2. set x or o
+            num3[1] = m;
+            break; }
+        else if (ch == 2 && num3[2] == '2'){
+            num3[2] = m;
+            break;}
+        else if (ch == 3 && num3[3] == '3'){
+            num3[3] = m;
+            break;}
+        else if (ch == 4 && num3[4] == '4'){
+            num3[4] = m;
+            break;}
+        else if (ch == 5 && num3[5] == '5'){
+            num3[5] = m;
+            break;}
+        else if (ch == 6 && num3[6] == '6'){
+            num3[6] = m;
+            break;}
+        else if (ch == 7 && num3[7] == '7'){
+            num3[7] = m;
+            break;}
+        else if (ch == 8 && num3[8] == '8'){
+            num3[8] = m;
+            break;}
+        else if (ch == 9 && num3[9] == '9'){
+            num3[9] = m;
+            break;}
+
+        }
+        }
+
+        }
+}
+
+void mediumbot4x4(int *player)
+{
+        char m;
+        char ch;
+        int ch1;
+        *player = (*player % 2) ? 1 : 2; //player switch
+
+        m = (*player == 1) ? 'X' : 'O'; // Assign symbol for current player
+
+    if (*player == 1) {
+
+        printf("Player %d, enter a number: ", *player);
+        scanf(" %c", &ch); // Space before %c to ignore leading whitespaces
+
+        // Check for valid move
+        if (ch >= '1' && ch <= '9' && num4[ch - '0'] == ch) {
+            num4[ch - '0'] = m;
+        } else if (ch >= 'a' && ch <= 'g' && num4[ch - 'a' + 10] == ch) {
+            num4[ch - 'a' + 10] = m;
+        } else {
+            printf("Invalid move. Try again.\n");
+            (*player)--; // Retry for the same player
+            getchar();   // Clear input buffer
+        }
+    } else {
+        // Bot's Turn
+            // Check for winning/blocking moves
+            // Rows
+           while (1) {
+    // Rows (x-axis)
+    if (num4[1] == num4[2] && num4[2] == num4[3] && num4[4] == '4') { num4[4] = m; break; }
+    if (num4[1] == num4[2] && num4[2] == num4[4] && num4[3] == '3') { num4[3] = m; break; }
+    if (num4[1] == num4[3] && num4[3] == num4[4] && num4[2] == '2') { num4[2] = m; break; }
+    if (num4[2] == num4[3] && num4[3] == num4[4] && num4[1] == '1') { num4[1] = m; break; }
+
+    if (num4[5] == num4[6] && num4[6] == num4[7] && num4[8] == '8') { num4[8] = m; break; }
+    if (num4[5] == num4[6] && num4[6] == num4[8] && num4[7] == '7') { num4[7] = m; break; }
+    if (num4[5] == num4[7] && num4[7] == num4[8] && num4[6] == '6') { num4[6] = m; break; }
+    if (num4[6] == num4[7] && num4[7] == num4[8] && num4[5] == '5') { num4[5] = m; break; }
+
+    if (num4[9] == num4[10] && num4[10] == num4[11] && num4[12] == 'c') { num4[12] = m; break; }
+    if (num4[9] == num4[10] && num4[10] == num4[12] && num4[11] == 'b') { num4[11] = m; break; }
+    if (num4[9] == num4[11] && num4[11] == num4[12] && num4[10] == 'a') { num4[10] = m; break; }
+    if (num4[10] == num4[11] && num4[11] == num4[12] && num4[9] == '9') { num4[9] = m; break; }
+
+    if (num4[13] == num4[14] && num4[14] == num4[15] && num4[16] == 'g') { num4[16] = m; break; }
+    if (num4[13] == num4[14] && num4[14] == num4[16] && num4[15] == 'f') { num4[15] = m; break; }
+    if (num4[13] == num4[15] && num4[15] == num4[16] && num4[14] == 'e') { num4[14] = m; break; }
+    if (num4[14] == num4[15] && num4[15] == num4[16] && num4[13] == 'd') { num4[13] = m; break; }
+
+    // Columns (y-axis)
+    if (num4[1] == num4[5] && num4[5] == num4[9] && num4[13] == 'd') { num4[13] = m; break; }
+    if (num4[1] == num4[5] && num4[5] == num4[13] && num4[9] == '9') { num4[9] = m; break; }
+    if (num4[1] == num4[9] && num4[9] == num4[13] && num4[5] == '5') { num4[5] = m; break; }
+    if (num4[5] == num4[9] && num4[9] == num4[13] && num4[1] == '1') { num4[1] = m; break; }
+
+    if (num4[2] == num4[6] && num4[6] == num4[10] && num4[14] == 'e') { num4[14] = m; break; }
+    if (num4[2] == num4[6] && num4[6] == num4[14] && num4[10] == 'a') { num4[10] = m; break; }
+    if (num4[2] == num4[10] && num4[10] == num4[14] && num4[6] == '6') { num4[6] = m; break; }
+    if (num4[6] == num4[10] && num4[10] == num4[14] && num4[2] == '2') { num4[2] = m; break; }
+
+    if (num4[3] == num4[7] && num4[7] == num4[11] && num4[15] == 'f') { num4[15] = m; break; }
+    if (num4[3] == num4[7] && num4[7] == num4[15] && num4[11] == 'b') { num4[11] = m; break; }
+    if (num4[3] == num4[11] && num4[11] == num4[15] && num4[7] == '7') { num4[7] = m; break; }
+    if (num4[7] == num4[11] && num4[11] == num4[15] && num4[3] == '3') { num4[3] = m; break; }
+
+    if (num4[4] == num4[8] && num4[8] == num4[12] && num4[16] == 'g') { num4[16] = m; break; }
+    if (num4[4] == num4[8] && num4[8] == num4[16] && num4[12] == 'c') { num4[12] = m; break; }
+    if (num4[4] == num4[12] && num4[12] == num4[16] && num4[8] == '8') { num4[8] = m; break; }
+    if (num4[8] == num4[12] && num4[12] == num4[16] && num4[4] == '4') { num4[4] = m; break; }
+
+    // Diagonals
+    if (num4[1] == num4[6] && num4[6] == num4[11] && num4[16] == 'g') { num4[16] = m; break; }
+    if (num4[1] == num4[6] && num4[6] == num4[16] && num4[11] == 'b') { num4[11] = m; break; }
+    if (num4[1] == num4[11] && num4[11] == num4[16] && num4[6] == '6') { num4[6] = m; break; }
+    if (num4[6] == num4[11] && num4[11] == num4[16] && num4[1] == '1') { num4[1] = m; break; }
+
+    if (num4[4] == num4[7] && num4[7] == num4[10] && num4[13] == 'd') { num4[13] = m; break; }
+    if (num4[4] == num4[7] && num4[7] == num4[13] && num4[10] == 'a') { num4[10] = m; break; }
+    if (num4[4] == num4[10] && num4[10] == num4[13] && num4[7] == '7') { num4[7] = m; break; }
+    if (num4[7] == num4[10] && num4[10] == num4[13] && num4[4] == '4') { num4[4] = m; break; }
+
+
+            // If no strategic move, pick a random valid square
+            ch1 = 1 + rand() % 16;
+            if (num4[ch1] == (ch1 <= 9 ? '0' + ch1 : 'a' + ch1 - 10)) {
+                num4[ch1] = m;
+                break;
+            }
+        }
+    }
+}
+// Struct for profile creation
+typedef struct {
+    char username[100];
+    int password;
+    int win;
+    int loss;
+    int draw;
+} profile;
+
+void prof_display_stats(const char *profname) {
+    // Check if the profile name is valid
+    if (profname == NULL || profname[0] == '\0') {
+        printf("Error: Profile name is empty or invalid.\n");
+        return;
+    }
+
+    // Open file for reading
+    FILE *file = fopen(profname, "r");
+    if (file == NULL) {
+        printf("Error: Unable to open profile file '%s' for reading.\n", profname);
+        return;
+    }
+
+    printf("\nProfile Statistics for '%s':\n", profname);
+
+    // Read and display the file contents line by line
+    char line[100];
+    while (fgets(line, sizeof(line), file)) {
+        printf("%s", line); // Print each line as it is read
+    }
+
+    fclose(file);
+    printf("End of Profile Statistics.\n");
+}
+
+void prof_update(char *profname, size_t size, float *pl) {
+    profile prof;
+
+    // Open file for reading
+    FILE *file = fopen(profname, "r");
+    if (file == NULL) {
+        printf("Error opening file for reading: '%s'\n", profname);
+        return;
+    }
+
+    // Parse file contents to populate the profile structure
+    char line[100];
+    while (fgets(line, sizeof(line), file)) {
+        sscanf(line, "Username: %s", prof.username);
+        sscanf(line, "Password: %d", &prof.password);
+        sscanf(line, "Wins: %d", &prof.win);
+        sscanf(line, "Losses: %d", &prof.loss);
+        sscanf(line, "Draws: %d", &prof.draw);
+    }
+    fclose(file);
+
+    // Update the 'win' stat based on player win count
+    if (*pl > 0) {
+        prof.win += *pl;  // Increment wins for player 1
+    }
+
+    // Open file for writing to save updated stats
+    file = fopen(profname, "w");
+    if (file == NULL) {
+        printf("Error opening file for writing: '%s'\n", profname);
+        return;
+    }
+
+    // Write updated data back to the file
+    fprintf(file, "Username: %s\n", prof.username);
+    fprintf(file, "Password: %d\n", prof.password);
+    fprintf(file, "Wins: %d\n", prof.win);
+    fprintf(file, "Losses: %d\n", prof.loss);
+    fprintf(file, "Draws: %d\n", prof.draw);
+    fclose(file);
+
+    printf("Profile '%s' updated successfully.\n", profname);
+}
+
+//Creation of profile function
+void prof_create(char* profname, size_t size) {
+    profile prof;
+
+    printf("Enter new username: ");
+    fgets(prof.username, 100, stdin);
+    prof.username[strcspn(prof.username, "\n")] = '\0'; // Remove the newline
+
+    printf("Enter new NUMERICAL password: ");
+    scanf("%d", &prof.password);
+    getchar(); // Clear the newline character left in stdin
+
+    prof.win = 0;
+    prof.loss = 0;
+    prof.draw = 0;
+
+    // Create the file name dynamically
+    char filename[110];
+    sprintf(filename, "%s.txt", prof.username);
+
+    // Open file for writing
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error opening/creating file for writing!\n");
+        return;
+    }
+
+    // Write data to the file
+    fprintf(file, "Username: %s\n", prof.username);
+    fprintf(file, "Password: %d\n", prof.password);
+    fprintf(file, "Wins: %d\n", prof.win);
+    fprintf(file, "Losses: %d\n", prof.loss);
+    fprintf(file, "Draws: %d\n", prof.draw);
+    fclose(file);
+
+    printf("File '%s' created successfully.\n", filename);
+
+    // Open file for reading
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file for reading!\n");
+        return;
+    }
+    //Saving profile name
+    strncpy(profname, filename, size);
+    profname[size - 1] = '\0'; // Ensure null termination
+
+
+    // Read and display the contents of the file
+    char line[100];
+    printf("File contents:\n");
+    while (fgets(line, sizeof(line), file)) {
+        printf("%s", line);
+    }
+    fclose(file);
+}
+//Fuction of sign in
+void prof_signin(char* profname, size_t size) {
+    char username[100];
+    int password, passwordreal = -1;
+    int win = -1, loss = -1, draw = -1;
+
+    // Prompt for username
+    printf("Enter your username: ");
+    fgets(username, 100, stdin);
+    username[strcspn(username, "\n")] = '\0'; // Remove the newline
+
+    // Create the file name dynamically
+    char filename[110];
+    sprintf(filename, "%s.txt", username);
+
+    // Open file for reading
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error: User profile '%s' does not exist.\n", username);
+        return;
+    }
+
+    //Saving profile name
+    strncpy(profname, filename, size);
+    profname[size - 1] = '\0'; // Ensure null termination
+
+    // Read data line by line
+    char line[100];
+    while (fgets(line, sizeof(line), file)) {
+        sscanf(line, "Password: %d", &passwordreal);
+        sscanf(line, "Wins: %d", &win);
+        sscanf(line, "Losses: %d", &loss);
+        sscanf(line, "Draws: %d", &draw);
+    }
+    fclose(file);
+
+    // Validate that all fields were parsed
+    if (passwordreal == -1 || win == -1 || loss == -1 || draw == -1) {
+        printf("Error: File '%s' is not formatted correctly.\n", filename);
+        return;
+    }
+
+    // Validate password
+    while (1) {
+        printf("Enter your NUMERICAL password: ");
+        scanf("%d", &password);
+        if (password == passwordreal) {
+            printf("Login successful! Welcome back, %s.\n", username);
+            break;
+        } else {
+            printf("Incorrect password, try again.\n");
+        }
+    }
+
+    // Display user stats
+    printf("\nYour Stats:\n");
+    printf("Wins: %d\n", win);
+    printf("Losses: %d\n", loss);
+    printf("Draws: %d\n", draw);
+    getchar();
+}
+
+
+ int endgame(int i, int *player, float *pl1, float *pl2){
+  if (i == 1){
+         if ((*player-1) == 1)//taking previous player value
+          { *pl1 = *pl1+1;
+             printf("==> Player 1 wins!\n");
+             printf("==> Player1  %.1f score\n==> Player2  %.1f score\n", *pl1, *pl2);
+             return *pl1, *pl2;}
+        else
+             {*pl2 = *pl2+1;
+             printf("==> Player 2 wins!\n");
+            printf("==> Player1  %.1f score\n==> Player2  %.1f score\n", *pl1, *pl2);
+            return *pl1, *pl2;}
+        }
+     else{
+    *pl1 = *pl1+0.5;
+     *pl2 = *pl2+0.5;
+     printf("==> It is Draw!\n");
+      printf("==> Player1  %.1f score\n==> Player2  %.1f score\n", *pl1, *pl2);
+    return *pl1, *pl2;}
+ }
+
+
+void display_menu(const char* options[], int size, int selected) {
+    screenclear();
+
+    for (int i = 0; i < size; i++) {
+        if (i == selected) {
+            printf("-> %s\n", options[i]);
+        } else {
+            printf("   %s\n", options[i]);
+        }
+    }
+}
+int menu1(const char* options[],int size, int selected){
+    int j;
+    while (1) {
+        display_menu(options, size, selected);
+
+        int key = getch(); // Does not require pressing Enter. The character is returned as soon as a key is pressed (diff with getchar)
+        if (key == 0 || key == 224) { // Arrow keys in Windows send two signals: the first is 0 or 224,
+            key = getch();           //and the actual arrow code comes next. The second getch() retrieves the arrow code.
+
+            if (key == 'A' || key == UP_ARROW) { //This checks for 'A', which might be mapped to the Up Arrow.  Platform-Independent Code:
+                selected = (selected - 1 + size) % size; // 3%4 = 3 ; 5%4 = 1 ;
+            } else if (key == 'B' || key == DOWN_ARROW) {   //this way allows do cycles, from 0 to the end if arrow up
+                selected = (selected + 1) % size;
+            }
+        } else if (key == ENTER_KEY) {
+            if (selected == size - 1) {
+                printf("To confirm quiting press any button. @Platon \n");
+                key = getch();
+                return 1;
+            } else {
+                return selected+1;}
+            // Wait for acknowledgment
+                }
+            }
+        }
+
+
+int main()
+{
+    int i, ch,games_count,gmode,gmode1,gmode2,gmode3, j;
+    float pl1;
+    float pl2;
+    char profname1[50];
+    char profname2[50];
+    for(int y = 0; y<games_count; y++)
+    {//games count for tournament bracket
+    int playervariable = 1;
+    int *player = &playervariable;
+
+    float varpl1 = 0.0;
+    int *pl1 = &varpl1;
+
+    float varpl2 = 0.0;
+    int *pl2 = &varpl2;
+
+printf("=====================================\n");
+printf("Welcome to Tic-Tac-Toe! By Platon Tsuz     \n");
+printf("=====================================\n\n");
+printf("Hi there! Ready for some fun?\n\n");
+
+printf("Press - \"Enter\" to continue\n");
+while(1){
+if (getch() == ENTER_KEY)
+    break;}
+
+
+screenclear();
+const char* menu_options1[] = {"Quick Game", "Buid your game", "Quit"};
+const char* menu_options2[] = {"3x3 (regular)", "4x4 (extended)", "Quit"};
+const char* menu_options3[] = {"Play Now", "Tournament Mode", "Quit"};
+const char* menu_options4[] = {"User vs User", "User vs PC", "Quit"};
+const char* menu_options5[] = {"Sign In", "Create Profile", "Proceed As Guest", "Quit"};
+const char* menu_options6[] = {"Easy", "Medium", "Hard", "Quit"};
+    int menu_size = sizeof(menu_options1) / sizeof(menu_options1[0]);
+    int selected = 0;
+
+int k;
+    k = menu1(menu_options1, menu_size, selected);
+    if (k == 1){
+        int ch1, ch2;
+        srand(time(NULL));
+        ch1 = 1 + rand() % 2;  //supposed to give 1 or 2 for board
+        ch2 = 1 + rand() % 3;  //supposed to give 1 or 2 or 3 for bot
+        //3x3
+        if (ch1==1 && ch2 == 1){
+            do {
+              game3x3();
+              easybot3x3(player);
+              i = win3x3();
+              (*player)++;
+            }while (i == -1);
+            endgame(i, player,  pl1, pl2);
+            return 0;
+        }
+
+        if (ch1==1 && ch2 == 2){
+            do {
+            game3x3();
+              mediumbot3x3(player);
+              i = win3x3();
+              (*player)++;
+            }while (i == -1);
+            endgame(i, player,  pl1, pl2);
+            return 0;
+        }
+
+        if (ch1==1 && ch2 == 3){
+            do {
+             game3x3();
+              mediumbot3x3(player);
+              i = win3x3();
+              (*player)++;
+            }while (i == -1);
+            endgame(i, player,  pl1, pl2);
+            return 0;
+        }
+
+    //4x4
+        if (ch1==2 && ch2 == 1){
+            do {
+             game4x4();
+              easybot4x4(player);
+              i = win4x4();
+              (*player)++;
+            }while (i == -1);
+            endgame(i, player,  pl1, pl2);
+            return 0;
+        }
+
+        if (ch1==2 && ch2 == 2){
+            do {
+             game4x4();
+              mediumbot4x4(player);
+              i = win4x4();
+              (*player)++;
+            }while (i == -1);
+            endgame(i, player,  pl1, pl2);
+            return 0;
+        }
+
+        if (ch1==2 && ch2 == 3){
+            do {
+             game4x4();
+              mediumbot4x4(player);
+              i = win4x4();
+              (*player)++;
+            }while (i == -1);
+            endgame(i, player,  pl1, pl2);
+            return 0;
+        }
+    }
+    if (k==2){
+        gmode = menu1(menu_options2, menu_size, selected);//select board
+        games_count = menu1(menu_options3, menu_size, selected);//select tournament
+            if (games_count == 1)
+                games_count = 1; //function is left for better understanding of logic in future
+
+            if (games_count == 2){
+                printf("Tournament mode: Type number of games (Example: 3)\nWinn/Loss statistics will be tracked:  ");
+                scanf("%d", &games_count);
+                getchar(); // To consume the newline character
+            }
+         gmode1 = menu1(menu_options4, menu_size, selected); //user or pc
+             if (gmode1 == 1){ //user vs user
+                   for (int p = 0; p<2; p++){
+                       screenclear();
+
+                               for (int i = 0; i<3; i++){
+                               printf("Choose for Player %d   ", p+1);
+                               usleep(700000);;
+                               screenclear();
+                               usleep(500000);}
+
+                        gmode3 = menu1(menu_options5, 4, selected);
+                        if (gmode3 == 1){
+                            prof_signin(profname1, sizeof(profname1));
+                        }
+                        if (gmode3 == 2){
+
+                                if (p == 0){
+                            prof_create(profname1, sizeof(profname1));
+                            screenclear();
+                            printf("Please Sign In to Your Account:\n");
+                            prof_signin(profname1, sizeof(profname1));
+                            }
+
+                            if (p == 1){
+                            prof_create(profname2, sizeof(profname2));
+                            screenclear();
+                            printf("Please Sign In to Your Account:\n");
+                            prof_signin(profname2, sizeof(profname2));
+                            }
+
+                        }
+                        if (gmode3 == 3){
+                           printf("\nYour stats will not be saved\n");
+                        }
+                    printf("\nProcessing....\n");
+                    sleep(2);
+                   }
+                }
+
+
+              if (gmode1 == 2){ //user vs bot
+                gmode3 = menu1(menu_options5, 4, selected);
+                    if (gmode3 == 1){
+                        prof_signin(profname1, sizeof(profname1));
+                    }
+                    if (gmode3 == 2){
+                        prof_create(profname1, sizeof(profname1));
+                         screenclear();
+                         printf("Please Sign In to Account:\n");
+                         prof_signin(profname1, sizeof(profname1));
+
+                    }
+                    if (gmode3 == 3){
+                       printf("Your stats will not be saved\n");
+                       printf("\nProcessing....\n");
+                       sleep(2);
+                    }
+               }
+    }
+
+
+
+    if(gmode1 == 2){
+          screenclear();
+          for (int i = 0; i<3; i++){
+            printf("Choose Bot Difficulty:");
+            usleep(600000);;
+            screenclear();
+            usleep(600000);}
+            gmode2 = menu1(menu_options6, 4, selected);
+    }
+
+        screenclear();
+         printf("%s\n", profname1);
+          printf("%s\n", profname2);
+        printf("Player will get:\n\t 1 point - for the win\n\t 0.5 points- for the draw\n\t 0 points - for the loss\n");
+        usleep(500000);
+        printf("Loading");
+        usleep(500000);
+        for (int i = 0; i<6; i++){
+            printf(".");
+            usleep(300000);}
+
+ for (int p = 0; p<games_count; p++){
+
+    if (gmode1 == 1 ){
+    do
+    {
+        if (gmode == 1)
+        { game3x3();
+          action3x3(player);
+          i = win3x3();
+          (*player)++;
+        }
+
+
+        else
+        {  game4x4();
+           action4x4(player);
+           i = win4x4();
+           (*player)++;
+        }
+
+    } while (i == -1);
+
+    if (gmode == 1){
+    game3x3();
+    reset3x3();
+    endgame(i, player,  pl1, pl2);
+    }
+    else{
+    game4x4();
+    reset4x4();
+    endgame(i, player,  pl1, pl2);
+    }
+    }
+
+    if (gmode1 == 2){ //bot vs user
+            if (gmode == 1 && gmode2 == 1){ //easy bot 3x3
+                do {
+                    game3x3();
+                    easybot3x3(player);
+                    i = win3x3();
+                    (*player)++;
+                } while (i == -1);
+                game3x3();
+                endgame(i, player,  pl1, pl2);
+                reset3x3();
+            }
+              if (gmode == 1 && gmode2 == 2){ //medium bot 3x3
+                do {
+                    game3x3();
+                    mediumbot3x3(player);
+                    i = win3x3();
+                    (*player)++;
+                } while (i == -1);
+                game3x3();
+                endgame(i, player,  pl1, pl2);
+                reset3x3();
+            }
+                if (gmode == 1 && gmode2 == 3){ //hard bot 3x3
+                do {
+                    game3x3();
+                    mediumbot3x3(player);
+                    i = win3x3();
+                    (*player)++;
+                } while (i == -1);
+                game3x3();
+                endgame(i, player,  pl1, pl2);
+                reset3x3();
+            }
+
+            if (gmode == 2 && gmode2 == 1){ //easy bot 4x4
+                do {
+                    game4x4();
+                    easybot4x4(player);
+                    i = win4x4();
+                    (*player)++;
+                } while (i == -1);
+                game4x4();
+                endgame(i, player,  pl1, pl2);
+                reset4x4();
+            }
+
+                 if (gmode == 2 && gmode2 == 2){ //medium bot 4x4
+                do {
+                    game4x4();
+                    mediumbot4x4(player);
+                    i = win4x4();
+                    (*player)++;
+                } while (i == -1);
+                game4x4();
+                endgame(i, player,  pl1, pl2);
+                reset4x4();
+
+            }
+                 if (gmode == 2 && gmode2 == 3){ //hard bot 4x4
+                do {
+                    game4x4();
+                    mediumbot4x4(player);
+                    i = win4x4();
+                    (*player)++;
+                } while (i == -1);
+                game4x4();
+                endgame(i, player,  pl1, pl2);
+                reset4x4();
+            }
+
+
+        }
+        printf("\Next Game Starts Shortly\n");
+        printf("Loading");
+        usleep(500000);
+        for (int i = 0; i<5; i++){
+            printf(".");
+            usleep(300000);}
+    }
+screenclear();
+if (pl1>pl2){
+   printf("---------------\n");
+   printf("Player 1 - WON \n");
+   printf("---------------\n");
+}
+if (pl1<pl2){
+   printf("---------------\n");
+   printf("Player 2 - WON \n");
+   printf("---------------\n");
+}
+if (pl1==pl2){
+   printf("----------------------\n");
+   printf("Draw - Friendship WON \n");
+   printf("----------------------\n");
+}
+//Update of profile
+if (gmode1 == 2){
+    prof_update(*profname1, sizeof(*profname1), *pl1);
+    prof_display_stats(*profname1);
+}
+if (gmode1 == 1){
+    prof_update(*profname1, sizeof(profname1), *pl1);
+    prof_update(*profname2, sizeof(profname2), *pl2);
+    prof_display_stats(*profname1);
+    printf("----------------------\n");
+    prof_display_stats(*profname2);
+}
+
+//hui 2
+  //   printf("==> Player1  %.1f score\n==> Player2  %.1f score\n", pl1, pl2);
+   // } //games count for tournament bracket
+    return 0;
+}
+}
